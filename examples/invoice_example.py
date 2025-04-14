@@ -1,64 +1,30 @@
-# 发票SDK
-
-这是发票SDK，支持发票开具、红冲、查询等功能。
-发票SDK python 电子发票/数电发票/全电发票/数电票/开票
-基础
-
-[中文文档](https://github.com/fapiaoapi/invoice "文档")
-
-* 获取授权
-* 登录数电发票平台
-* 获取人脸二维码
-* 获取人脸二维码认证状态
-* 获取认证状态
-
-发票开具
-
-* 数电蓝票开具接口
-* 获取销项数电版式文件
-
-发票红冲
-
-* 申请红字前查蓝票信息接口
-* 申请红字信息表
-* 开负数发票
-
-
-## 安装
-通过pypi安装:
-[pypi地址](https://pypi.org/project/tax-invoice/ "发票sdk")
-
-```bash
-pip install tax-invoice
-```
-```bash
 from tax.invoice import InvoiceClient
 from tax.invoice.utils.other import calculate_tax
 import time
-import traceback  # 新增导入
+import traceback  
 
 # 配置信息
 appKey = "YOUR_APP_KEY"""
 appSecret = "YOUR_APP_SECRET"
-nsrsbh = "91500112MADFAQ9xxx"  # 统一社会信用代码
+
+nsrsbh = "91500112MADFAQ9J2P"  # 统一社会信用代码
 title = "重庆悦江河科技有限公司"  # 名称（营业执照）
-username = "1912284xxxx"  # 手机号码（电子税务局）
+username = "19122840406"  # 手机号码（电子税务局）
 password = ""  # 个人用户密码（电子税务局）
 sf = "01"  # 身份（电子税务局）
 fphm = "24502000000045823936"
-token = ""
-
-
-# 初始化客户端
-client = InvoiceClient(
-    app_key=appKey,
-    app_secret=appSecret,
-    base_url="https://api.fa-piao.com"
-)
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDcyMDY3NTEsImlhdCI6MTc0NDYxNDc1MSwiaXNzIjoieXVlMDA1IiwibnNyc2JoIjoiOTE1MDAxMTJNQURGQVE5SjJQIiwidHlwZSI6IjEifQ.AIu231-m7Bq3bNOzPTghr-ni3j7oX3pKQ0UD_vRE0Ok"
 
 
 
 try:
+    # 初始化客户端
+    client = InvoiceClient(
+        app_key=appKey,
+        app_secret=appSecret,
+        base_url="https://api.fa-piao.com"
+    )
+
     # 获取授权
     if token :
         client.auth.set_token(token)
@@ -85,45 +51,45 @@ try:
         # print("合计金额：" + str(amount - se))
         # print(("含税" if isIncludeTax else "不含税") + " 合计税额：" + str(se))
 
-        # 开具蓝票示例
-        invoice_params = {
-            "fpqqlsh": appKey + str(int(time.time() * 1000)),
-            "fplxdm": "82",
-            "kplx": "0",
-            "xhdwsbh": nsrsbh,
-            "xhdwmc": title,
-            "xhdwdzdh": "重庆市渝北区仙桃街道汇业街1号17-2 19122840xxxx",
-            "xhdwyhzh": "中国工商银行 310008670920023xxxx",
-            "ghdwmc": "个人",
-            "zsfs": "0",
+        # # 开具蓝票示例
+        # invoice_params = {
+        #     "fpqqlsh": appKey+ str(int(time.time() * 1000)),
+        #     "fplxdm": "82",
+        #     "kplx": "0",
+        #     "xhdwsbh": nsrsbh,
+        #     "xhdwmc": title,
+        #     "xhdwdzdh": "重庆市渝北区仙桃街道汇业街1号17-2 19122840xxxx",
+        #     "xhdwyhzh": "中国工商银行 310008670920023xxxx",
+        #     "ghdwmc": "个人",
+        #     "zsfs": "0",
             
-            # 添加商品明细
-            "fyxm": [
-                {
-                    "fphxz": "0",
-                    "spmc": "*信息技术服务*软件开发服务",
-                    "je": "10",
-                    "sl": "0.01",
-                    "se": "0.1",
-                    "hsbz": "1",
-                    "spbm": "3040201010000000000"
-                }
-            ],
+        #     # 添加商品明细
+        #     "fyxm": [
+        #         {
+        #             "fphxz": "0",
+        #             "spmc": "*信息技术服务*软件开发服务",
+        #             "je": "10",
+        #             "sl": "0.01",
+        #             "se": "0.1",
+        #             "hsbz": "1",
+        #             "spbm": "3040201010000000000"
+        #         }
+        #     ],
             
-            # 合计金额
-            "hjje": "9.9",
-            "hjse": "0.1",
-            "jshj": "10"
-        }
+        #     # 合计金额
+        #     "hjje": "9.9",
+        #     "hjse": "0.1",
+        #     "jshj": "10"
+        # }
         
-        invoice_response = client.invoice.issue_blue_invoice(**invoice_params)
-        print(f"{invoice_response.get('code')} 开票结果: {invoice_response.get('msg')}")
+        # invoice_response = client.invoice.issue_blue_invoice(**invoice_params)
+        # print(f"{invoice_response.get('code')} 开票结果: {invoice_response.get('msg')}")
         
-        if invoice_response.get("code") == 200:
-            print(f"发票号码: {invoice_response.get('data', {}).get('Fphm')}")
-            print(f"开票日期: {invoice_response.get('data', {}).get('Kprq')}")
-            fphm = invoice_response.get('data', {}).get('Fphm')
-            time.sleep(10)  # 等待10秒
+        # if invoice_response.get("code") == 200:
+        #     print(f"发票号码: {invoice_response.get('data', {}).get('Fphm')}")
+        #     print(f"开票日期: {invoice_response.get('data', {}).get('Kprq')}")
+        #     fphm = invoice_response.get('data', {}).get('Fphm')
+        #     time.sleep(10)  # 等待10秒
         
         # 下载发票
         pdf_params = {
@@ -199,6 +165,3 @@ except Exception as e:
     # 添加上下文信息（可选）
     print(f"\n错误发生时参数状态：")
     print(f"当前时间戳: {int(time.time())}")
-
-```
-[发票红冲](examples\red_invoice_example.py "发票红冲")
