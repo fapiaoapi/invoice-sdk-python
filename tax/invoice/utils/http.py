@@ -1,6 +1,7 @@
 import requests
 from urllib3 import disable_warnings
 from urllib3.exceptions import InsecureRequestWarning
+from tax.invoice.utils.signature import calculate_signature, generate_random_string, get_timestamp
 
 # 禁用不安全请求警告
 disable_warnings(InsecureRequestWarning)
@@ -31,12 +32,12 @@ class HttpClient:
             
         return headers
     
-    def request(self, method, path, data=None, files=None):
+    
+    
+    def request(self, method, path, data=None, params=None, files=None):
         """发送HTTP请求"""
-        from tax.invoice.utils.signature import calculate_signature, generate_random_string, get_timestamp
-        
         # 准备签名参数
-        random_string = generate_random_string()
+        random_string = generate_random_string(20)
         timestamp = get_timestamp()
         
         # 计算签名

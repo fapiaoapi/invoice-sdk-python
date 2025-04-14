@@ -5,9 +5,9 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="tax-invoice",
-    version="1.0.0",
+    version="1.0.8",
     author="yuejianghe",
-    author_email="yuejianghel@qq.com",
+    author_email="yuejianghe@qq.com",
     description="发票 Python SDK 电子发票/数电发票/全电发票/数电票/开票",
     long_description=long_description,
     long_description_content_type="text/markdown",

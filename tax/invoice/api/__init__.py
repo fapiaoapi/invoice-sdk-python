@@ -1,1 +1,1 @@
-# API模块初始化文件
+# 确保tax.invoice.api是一个包
