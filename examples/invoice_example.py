@@ -7,13 +7,13 @@ import traceback
 appKey = "YOUR_APP_KEY"""
 appSecret = "YOUR_APP_SECRET"
 
-nsrsbh = "91500112MADFAQ9J2P"  # 统一社会信用代码
+nsrsbh = "91500112MADFAQ9xxx"  # 统一社会信用代码
 title = "重庆悦江河科技有限公司"  # 名称（营业执照）
-username = "19122840406"  # 手机号码（电子税务局）
+username = "19122840xxx"  # 手机号码（电子税务局）
 password = ""  # 个人用户密码（电子税务局）
 sf = "01"  # 身份（电子税务局）
 fphm = "24502000000045823936"
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDcyMDY3NTEsImlhdCI6MTc0NDYxNDc1MSwiaXNzIjoieXVlMDA1IiwibnNyc2JoIjoiOTE1MDAxMTJNQURGQVE5SjJQIiwidHlwZSI6IjEifQ.AIu231-m7Bq3bNOzPTghr-ni3j7oX3pKQ0UD_vRE0Ok"
+token = ""
 
 
 
@@ -41,15 +41,15 @@ try:
     if status_code == 200:
         print("认证状态: 无需认证")
         
-        # amount = 200
-        # taxRate = 0.01
-        # isIncludeTax = False # 是否含税
-        # # 税额计算
-        # se =  float(calculate_tax(amount,taxRate,isIncludeTax))  # 强制转换为浮点数
-        # print("价税合计：" + str(amount))
-        # print("税率：" + str(taxRate))
-        # print("合计金额：" + str(amount - se))
-        # print(("含税" if isIncludeTax else "不含税") + " 合计税额：" + str(se))
+#         amount = 200
+#         taxRate = 0.01
+#         isIncludeTax = False # 是否含税
+#         # 税额计算
+#         se =  calculate_tax(amount,taxRate,isIncludeTax)  # 强制转换为浮点数
+#         print("价税合计：" + str(amount))
+#         print("税率：" + str(taxRate))
+#         print("合计金额：" + str(amount - se))
+#         print(("含税" if isIncludeTax else "不含税") + " 合计税额：" + str(se))
 
         # # 开具蓝票示例
         # invoice_params = {

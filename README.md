@@ -117,7 +117,7 @@ try:
         # taxRate = 0.01
         # isIncludeTax = False # 是否含税
         # # 税额计算
-        # se =  float(calculate_tax(amount,taxRate,isIncludeTax))  # 强制转换为浮点数
+        # se =  calculate_tax(amount,taxRate,isIncludeTax,2)  # 强制转换为浮点数
         # print("价税合计：" + str(amount))
         # print("税率：" + str(taxRate))
         # print("合计金额：" + str(amount - se))
