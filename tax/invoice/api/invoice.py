@@ -4,7 +4,7 @@ class InvoiceAPI:
     def __init__(self, http_client):
         self.http_client = http_client
     
-    def issue_blue_invoice(self, **kwargs):
+    def blue_invoice(self, **kwargs):
         """
         数电蓝票开具接口
         
@@ -16,7 +16,7 @@ class InvoiceAPI:
         """
         path = "/v5/enterprise/blueTicket"
         return self.http_client.request("POST", path, kwargs)
-    
+
     def get_pdf_ofd_xml(self, nsrsbh, fphm, downflag, kprq=None, username=None, addSeal=None):
         """
         获取销项数电版式文件
@@ -62,7 +62,7 @@ class InvoiceAPI:
         Returns:
             API响应结果
         """
-        path = "/v5/enterprise/retInviceMsg"
+        path = "/v5/enterprise/retMsg"
         data = {
             "nsrsbh": nsrsbh,
             "fphm": fphm,
@@ -91,7 +91,7 @@ class InvoiceAPI:
         Returns:
             API响应结果
         """
-        path = "/v5/enterprise/applyRedInfo"
+        path = "/v5/enterprise/hzxxbsq"
         return self.http_client.request("POST", path, params)
     
     def red_ticket(self, params):
@@ -110,7 +110,27 @@ class InvoiceAPI:
         Returns:
             API响应结果
         """
-        path = "/v5/enterprise/redTicket"
+        path = "/v5/enterprise/hzfpkj"
+        return self.http_client.request("POST", path, params)
+
+    def sync_red_info(self, params):
+        """
+        红字信息表同步
+        
+        Args:
+            params: 开具红字发票所需的参数字典，包括：
+                nsrsbh: 发票请求流水号
+                username: 用户电票平台账号
+                kprqq: 开票日期起（格式：yyyyMMdd）
+                kprqz: 开票日期止（格式：yyyyMMdd）
+                async: 是否异步同步 传 1 进行异步同步，默认为 0
+                callbackUrl: 异步同步回调地址（async=1 时必填）
+                xxbbh: 信息表编号
+            
+        Returns:
+            API响应结果
+        """
+        path = "/v5/enterprise/hzxxbtb"
         return self.http_client.request("POST", path, params)
     
     

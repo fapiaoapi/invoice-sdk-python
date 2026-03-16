@@ -1,22 +1,26 @@
+
 from tax.invoice import InvoiceClient
-from tax.invoice.exceptions import InvoiceException
 import time
 import traceback  
 
 # 配置信息
-APP_KEY = 'your_app_key'
-APP_SECRET = 'your_app_secret'
-nsrsbh = '915101820724315989'  # 纳税人识别号
-username = '19122840xxx'  # 手机号码（电子税务局）
-fphm = '25502000000038381718'
-kprq = '2025-04-13 13:35:27'
-token = ''
+APP_KEY = ''
+APP_SECRET = ''
+
+# 配置信息
+nsrsbh = ""  # 统一社会信用代码
+title = ""  # 名称（营业执照）
+username = ""  # 手机号码（电子税务局）
+password = ""  # 个人用户密码（电子税务局）
+sf = "01"  # 身份（电子税务局）
+fphm = "26112000001018143646"
+token = ""
 
 try:
     # 创建客户端
     client = InvoiceClient(
-        app_key=appKey,
-        app_secret=appSecret,
+        app_key=APP_KEY,
+        app_secret=APP_SECRET,
         base_url="https://api.fa-piao.com"
     )
     if token:
