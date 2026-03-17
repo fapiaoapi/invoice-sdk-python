@@ -136,7 +136,7 @@ try:
         db=0,  # 使用第0个数据库
         decode_responses=True  # 自动将Redis返回的字节转为字符串
     )
-    key =  nsrsbh + "@TOKEN"
+    key =  nsrsbh+ "@" + username + "@TOKEN"
     token = r.get(key)
     # 一 获取授权token  可从缓存redis中获取Token
     if token :
@@ -174,7 +174,7 @@ try:
             {
                 "fphxz": "0",
                 "spmc": "*研发和技术服务*技术服务费",
-                "je": 1140.68,
+                "je": 114.68,
                 "sl": 0.01,
                 "se": 1.14,
                 "hsbz": 1,
@@ -183,7 +183,7 @@ try:
         ],
         
         # 合计金额
-        "hjje": 1130.54,
+        "hjje": 113.54,
         "hjse": 1.14,
         "jshj": 114.68
     }
