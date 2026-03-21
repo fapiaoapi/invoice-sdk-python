@@ -22,6 +22,7 @@ password = "test123456XXX"  # 个人用户密码（电子税务局）
 sf = "01"  # 身份（电子税务局）
 fphm = ""
 token = ""
+type = "6" # 默认6，6基础 7标准
 
 
 def str_to_qr_base64(data: str) -> str:
@@ -65,7 +66,7 @@ try:
         db=0,  # 使用第0个数据库
         decode_responses=True  # 自动将Redis返回的字节转为字符串
     )
-    key =  nsrsbh+"@"+username + "@TOKEN"
+    key =  nsrsbh + "@" + username + "@TOKEN"
     token = r.get(key)
     # 一 获取授权token  可从缓存redis中获取Token
     if token :
@@ -75,7 +76,8 @@ try:
            
          # 获取授权Token文档
          # @link https://fa-piao.com/doc.html#api1?source=github
-        auth_response = client.auth.get_authorization(nsrsbh=nsrsbh)
+        auth_response = client.auth.get_authorization(nsrsbh,type)
+      # auth_response = client.auth.get_authorization(nsrsbh,type,username,password)
         if auth_response.get("code") == 200:
             print(f"授权成功，Token: {auth_response.get('data', {}).get('token')}")
             token = auth_response.get('data', {}).get('token')

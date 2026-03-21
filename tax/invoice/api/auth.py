@@ -16,7 +16,7 @@ class AuthAPI:
         """
         self.http_client.set_authorization(token)
     
-    def get_authorization(self, nsrsbh,type="6"):
+    def get_authorization(self, nsrsbh,type="6",username="",password=""):
         """
         获取授权
         
@@ -27,9 +27,12 @@ class AuthAPI:
             API响应结果
         """
         path = "/v5/enterprise/authorization"
-        data = {"nsrsbh": nsrsbh}
-        if type == "5":
-            data["type"] = type
+        data = {
+            "nsrsbh": nsrsbh,
+            "type": type,
+            "username": username,
+            "password": password
+        }
         
         result = self.http_client.request("POST", path, data)
         
