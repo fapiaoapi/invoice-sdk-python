@@ -286,9 +286,6 @@ try:
         case 401:
             # 重新授权
             print(f"{invoice_response.get('code')}授权失败:{invoice_response.get('msg')}")
-        case 503:
-            # 服务器繁忙 重新发起请求即可
-            print(f"{invoice_response.get('code')}服务器繁忙:{invoice_response.get('msg')}")
         case _:
             print(f"{invoice_response.get('code')}  {invoice_response.get('msg')}")
 

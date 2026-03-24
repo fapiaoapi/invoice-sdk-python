@@ -132,5 +132,23 @@ class InvoiceAPI:
         """
         path = "/v5/enterprise/hzxxbtb"
         return self.http_client.request("POST", path, params)
+    def http_post(self,path, params):
+        """
+        post请求
+        Args:
+            params: 参数字典
+        Returns:
+            API响应结果
+        """
+        return self.http_client.request("POST", path, params)
+    def http_get(self,path, params):
+        """
+        get请求
+        Args:
+            params: 参数字典
+        Returns:
+            API响应结果
+        """
+        return self.http_client.request("GET", path, params)
     
     
