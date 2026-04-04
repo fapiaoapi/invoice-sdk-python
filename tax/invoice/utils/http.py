@@ -10,10 +10,11 @@ import json
 disable_warnings(InsecureRequestWarning)
 
 class HttpClient:
-    def __init__(self, base_url, app_key, app_secret, verify_ssl=False, max_retries=3, timeout=30):
+    def __init__(self, base_url, app_key, app_secret, debug=False, verify_ssl=False, max_retries=3, timeout=30):
         self.base_url = base_url
         self.app_key = app_key
         self.app_secret = app_secret
+        self.debug = debug
         self.verify_ssl = verify_ssl
         self.authorization = None
         
@@ -67,6 +68,18 @@ class HttpClient:
                 fields[key] = str(value)
         return fields
 
+    def _print_debug(self, name, value):
+        if not self.debug:
+            return
+        if isinstance(value, (dict, list, tuple)):
+            try:
+                display = json.dumps(value, ensure_ascii=False, indent=2)
+            except (TypeError, ValueError):
+                display = str(value)
+        else:
+            display = str(value)
+        print(f"[InvoiceSDK Debug] {name}: {display}")
+
     def request(self, method, path, data=None, params=None, files=None):
         """发送HTTP请求"""
         # 准备签名参数
@@ -88,9 +101,11 @@ class HttpClient:
         
         # 构建完整URL
         url = f"{self.base_url}{path}"
+        request_method = method.upper()
+        request_payload = params if request_method == 'GET' else (data if data is not None else files)
         
         try:
-            if method.upper() == 'GET':
+            if request_method == 'GET':
                 query_params = params if params is not None else data
                 if query_params:
                     url = f"{url}?{urlencode(query_params)}"
@@ -117,6 +132,11 @@ class HttpClient:
                     # 无数据的POST请求
                     response = self.http.request('POST', url, headers=headers)
             
+            self._print_debug("URL", url)
+            self._print_debug("Method", request_method)
+            self._print_debug("Header", headers)
+            self._print_debug("Params", request_payload)
+
             # 解析响应
             try:
                 result = json.loads(response.data.decode('utf-8'))
@@ -126,12 +146,19 @@ class HttpClient:
                     "msg": "非JSON响应",
                     "data": response.data.decode('utf-8')
                 }
+            self._print_debug("Response", result)
             
             return result
             
         except Exception as e:
-            return {
+            error_result = {
                 "code": 500,
                 "msg": f"请求异常: {str(e)}",
                 "data": None
             }
+            self._print_debug("URL", url)
+            self._print_debug("Method", request_method)
+            self._print_debug("Header", headers)
+            self._print_debug("Params", request_payload)
+            self._print_debug("Response", error_result)
+            return error_result
