@@ -24,9 +24,11 @@ nsrsbh = ""  # 统一社会信用代码
 title = ""  # 名称（营业执照）
 username = ""  # 手机号码（电子税务局）
 password = ""  # 个人用户密码（电子税务局）
-
-xhdwdzdh = "重庆市渝北区龙溪街道丽园路2号XXXX 1325580XXXX" # // 地址和电话 空格隔开
+type = "6"# 6基础 7标准
+xhdwdzdh = "重庆市渝北区龙溪街道丽园路2号XXXX 1325580XXXX" # 地址和电话 空格隔开
 xhdwyhzh = "工商银行XXXX 15451211XXXX"  #开户行和银行账号 空格隔开
+
+
 
 token = ""
 debug = True
@@ -39,6 +41,14 @@ r = redis.Redis(
         db=0,  # 使用第0个数据库
         decode_responses=True  # 自动将Redis返回的字节转为字符串
     )
+    
+# 初始化客户端
+client = InvoiceClient(
+    app_key=APP_KEY,
+    app_secret=APP_SECRET,
+    base_url="https://api.fa-piao.com",
+    debug=debug
+)    
 
 #字符串转二维码图片base64
 def str_to_qr_base64(data: str) -> str:
@@ -81,10 +91,10 @@ def print_qr_code(data):
     qr.print_ascii(invert=True) # invert=True 会让背景变黑，码变白（适合深色背景终端）
 
 def blue_invoice():
-    # 开票参数说明demo
+    # 开票税额计算demo
     # @link https://github.com/fapiaoapi/invoice-sdk-python/blob/master/examples/tax_example.py
     invoice_params = {
-        "fpqqlsh": "Xz5NXPmB" + str(int(time.time() * 1000)), # 建议用你的订单号
+        "fpqqlsh": APP_KEY + str(int(time.time() * 1000)), # 建议用你的订单号
         "fplxdm": "82",
         "kplx": "0",
         "xhdwsbh": nsrsbh,
@@ -154,13 +164,7 @@ def get_token(force_update=False):
 
 
 
-# 初始化客户端
-client = InvoiceClient(
-    app_key=APP_KEY,
-    app_secret=APP_SECRET,
-    base_url="https://api.fa-piao.com",
-    debug=debug
-)
+
 
 
 
@@ -171,7 +175,7 @@ try:
     # 前端模拟数电发票/电子发票开具 (蓝字发票)
     # @link https://fa-piao.com/fapiao.html?source=github
 
-    # 二 获取授权token  可从缓存redis中获取Token
+    # 二 开具蓝票
     invoice_response = blue_invoice()
     match invoice_response.get("code"):
         case 200:
@@ -189,8 +193,6 @@ try:
             # @link https://fa-piao.com/doc.html#api2?source=github
             login_response = client.auth.login_dppt(nsrsbh=nsrsbh, username=username, password=password)
             if login_response.get("code") == 200:
-                print(login_response.get("msg"))
-                print(f"请输入验证码")
                 deadline = (datetime.now() + timedelta(seconds=300)).strftime("%Y-%m-%d %H:%M:%S")
                 try:
                     # 设置 timeout=300 表示 300 秒
@@ -202,7 +204,7 @@ try:
                     if login_response2.get("code") == 200:
                         print(login_response2.get("data"))
                         print("\n短信验证成功")
-                        print("\n请再次调用blue_invoice")
+                        print("\n再次调用blue_invoice")
                         invoice_response = blue_invoice()
                         get_pdf_ofd_xml(invoice_response.get('data', {}).get('Fphm')  )
                 except TimeoutOccurred:
@@ -215,8 +217,7 @@ try:
             # 1 获取人脸二维码
             # @link https://fa-piao.com/doc.html#api3?source=github
             qr_code_response = client.face.get_face_img(nsrsbh=nsrsbh, username=username, type="1")
-            print("二维码: " + str(qr_code_response.get("data")))
-            
+ 
             ewmly = qr_code_response.get("data", {}).get("ewmly")
             if ewmly == "swj":
                 print("\n请使用电子税务局app扫码")
@@ -233,7 +234,7 @@ try:
                     deadline = (datetime.now() + timedelta(seconds=300)).strftime("%Y-%m-%d %H:%M:%S")
                     try:
                     # 设置 timeout=300 表示 300 秒
-                        input_num = inputimeout(prompt=f"请在300秒内({deadline}前)输入内容: ", timeout=300)
+                        input_num = inputimeout(prompt=f"请在300秒内({deadline}前)输入: ", timeout=300)
                         print(f"\n你输入了: {input_num}")
                         # 2 认证完成后 获取人脸二维码认证状态
                         # @link https://fa-piao.com/doc.html#api4?source=github
