@@ -10,7 +10,7 @@ import json
 disable_warnings(InsecureRequestWarning)
 
 class HttpClient:
-    def __init__(self, base_url, app_key, app_secret, debug=False, verify_ssl=False, max_retries=3, timeout=30):
+    def __init__(self, base_url, app_key, app_secret, debug=False, verify_ssl=False, max_retries=3, timeout=150):
         self.base_url = base_url
         self.app_key = app_key
         self.app_secret = app_secret
