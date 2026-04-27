@@ -43,7 +43,8 @@ class HttpClient:
             'AppKey': self.app_key,
             'TimeStamp': timestamp,
             'RandomString': random_string,
-            'Sign': signature
+            'Sign': signature,
+            'Sdk':'Py1017'
         }
         
         if self.authorization:
